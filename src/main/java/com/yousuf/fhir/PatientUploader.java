@@ -19,10 +19,17 @@ public class PatientUploader {
 
         String seqN = "93704.0";
 
-        Observation rbsObservation = new ObservationProvider().getObservation(seqN, patient);
-        //uploadObservation(client, rbsObservation);
+        ObservationProvider observationProvider = new ObservationProvider();
 
-        readObservationById("Observation/rbc-" + seqN, client, parser);
+        //Observation rbcObservation = observationProvider.getRbcObservation(seqN, patient);
+        //uploadObservation(client, rbcObservation);
+
+        //readObservationById("Observation/rbc-" + seqN, client, parser);
+
+        Observation ekgObservation = observationProvider.getEkgObservation(seqN, patient);
+        uploadObservation(client, ekgObservation);
+
+        readObservationById("Observation/ekg-" + seqN, client, parser);
 
     }
 
