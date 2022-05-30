@@ -19,11 +19,11 @@ public class PatientProvider {
 
         // Patient Family Name
         //String patientFamilyName = nextRecord.get("PATIENT_FAMILYNAME");
-        String patientFamilyName = "Simpson";
+        String patientFamilyName = "Doe";
 
         // Patient Given Name
         //String patientGivenName = nextRecord.get("PATIENT_GIVENNAME");
-        String patientGivenName = "Marge";
+        String patientGivenName = "John";
 
         // Patient Gender - Values will be "M" or "F"
         //String patientGender = nextRecord.get("PATIENT_GENDER");
@@ -33,6 +33,7 @@ public class PatientProvider {
         Patient patient = new Patient();
         patient.setId("Patient/" + patientId);
         patient.addName().setFamily(patientFamilyName).addGiven(patientGivenName);
+        patient.addAddress().setCountry("Bangladesh").setCity("Dhaka").setState("Dhaka");
 
         // Gender code needs to be mapped
         switch (patientGender) {

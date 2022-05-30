@@ -42,7 +42,8 @@ public class ObservationProvider {
 
     public Observation getEkgObservation(String seqN, Patient patient){
         int[] ekgData = DataGenerator.getRandomEkgData(100);
-        String ekgStringData = Arrays.stream(ekgData).mapToObj(String::valueOf).collect(Collectors.joining(" "));
+        //String ekgStringData = Arrays.stream(ekgData).mapToObj(String::valueOf).collect(Collectors.joining(" "));
+        String ekgStringData = DataGenerator.getSampleEcgData();
         System.out.println("Ecg Sample Data: " + ekgStringData);
         String timestamp = "2020-11-18T08:50:09.322Z";
 
@@ -52,22 +53,24 @@ public class ObservationProvider {
         ekgObservation.setEffective(new DateTimeType(timestamp));
 
         Coding ekgCode = new Coding()
-                .setSystem("http://loinc.org")
-                .setCode("6690-2")
-                .setDisplay("Sample ECG data");
+                .setSystem("unknown")
+                .setCode("131328")
+                .setDisplay("MDC_ECG_ELEC_POTL");
 
         ekgObservation.getCode().addCoding(ekgCode);
 
         SampledData sampledData = new SampledData()
                 .setData(ekgStringData)
-                .setLowerLimit(DataGenerator.ekgRangeMin)
-                .setUpperLimit(DataGenerator.ekgRangeMax)
-                .setDimensions(100)
-                .setPeriod(30)
-                .setOrigin(new Quantity().setValue(150));
+                .setLowerLimit(DataGenerator.ekgLowerLimit)
+                .setUpperLimit(DataGenerator.ekgUpperLimit)
+                .setDimensions(DataGenerator.ekgDimensions)
+                .setPeriod(DataGenerator.ekgPeriod)
+                .setFactor(DataGenerator.ekgFactor)
+                .setOrigin(new Quantity().setValue(DataGenerator.ekgOrigin));
 
         ekgObservation.setValue(sampledData);
-        ekgObservation.setSubject(new Reference("Patient/" + patient.getId()));
+        ekgObservation.setDevice(new Reference().setDisplay("12 lead EKG Device Metric"));
+        ekgObservation.setSubject(new Reference("Patient/" + patient.getId()).setDisplay(patient.getNameFirstRep().getNameAsSingleString()));
         return ekgObservation;
     }
 
